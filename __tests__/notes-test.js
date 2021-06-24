@@ -12,25 +12,25 @@ var StubPlayer = function (buffers, opts) {
   return notes(player)
 }
 
-describe('mapper', function () {
-  it('accepts midi numbers as note names', function () {
+describe('mapper', () => {
+  it('accepts midi numbers as note names', () => {
     var player = StubPlayer({ 'C4': 'C oct4', 'C5': 'C oct5' })
     player.start(60, 10)
     assert.deepStrictEqual(player.started[0], { note: 60, time: 10, opts: undefined })
     assert.strictEqual(player.buffers[60], 'C oct4')
   })
-  it('converts note names to midi numbers', function () {
+  it('converts note names to midi numbers', () => {
     var player = StubPlayer({'Db4': 'buffer'})
     player.start('C#4')
     assert.deepStrictEqual(player.started[0], { note: 61, time: undefined, opts: undefined })
     assert.strictEqual(player.buffers[61], 'buffer')
   })
-  it('accepts note midi numbers with decimal points', function () {
+  it('accepts note midi numbers with decimal points', () => {
     var player = StubPlayer({'C4': 'note'})
     player.start(60.5, 10)
     assert.deepStrictEqual(player.started[0], { note: 60, time: 10, opts: { cents: 50 } })
   })
-  it('it maps note to midi numbers by default', function () {
+  it('it maps note to midi numbers by default', () => {
     var audio = Audio('C4 D4')
     var player = Player(audio.ac, audio.buffers).connect(audio.ac.destination)
     console.log(player.buffers)
@@ -40,7 +40,7 @@ describe('mapper', function () {
     assert.strictEqual(audio.played().length, 1)
     assert.strictEqual(audio.played(0).bufferName, 'C4')
   })
-  it('accepts a custom map function', function () {
+  it('accepts a custom map function', () => {
     function upcase (str) { return str.toUpperCase() }
     var audio = Audio('one two')
     var player = Player(audio.ac, audio.buffers, { map: upcase })

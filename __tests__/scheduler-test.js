@@ -11,15 +11,15 @@ function StubPlayer (time) {
   return scheduler(player)
 }
 
-describe('scheduler', function () {
-  it('events can be an array with [time, note]', function () {
+describe('scheduler', () => {
+  it('events can be an array with [time, note]', () => {
     var player = StubPlayer(1000)
     player.schedule(0, [ [0, 60], [1, 72] ])
     assert.deepStrictEqual(player.played, [
       { time: 1000, note: 60, opts: {} }, { time: 1001, note: 72, opts: {} }
     ])
   })
-  it('events can be an array with [time, obj]', function () {
+  it('events can be an array with [time, obj]', () => {
     var player = StubPlayer(1000)
     player.schedule(0, [ [1, {note: 'C2'}], [2, {note: 'C3'}] ])
     assert.deepStrictEqual(player.played, [
@@ -27,7 +27,7 @@ describe('scheduler', function () {
       { time: 1002, note: 'C3', opts: {note: 'C3'} }
     ])
   })
-  it('events can be an array with [{time: t, note: n}]', function () {
+  it('events can be an array with [{time: t, note: n}]', () => {
     var player = StubPlayer(1000)
     player.schedule(0, [{time: 1, note: 60}, {time: 2, note: 62}])
     assert.deepStrictEqual(player.played, [
@@ -35,7 +35,7 @@ describe('scheduler', function () {
       { time: 1002, note: 62, opts: {time: 2, note: 62} }
     ])
   })
-  it('events can be an array with [{time: t, midi: n}]', function () {
+  it('events can be an array with [{time: t, midi: n}]', () => {
     var player = StubPlayer(1000)
     player.schedule(0, [{time: 1, midi: 60}, {time: 2, midi: 62}])
     assert.deepStrictEqual(player.played, [
@@ -43,7 +43,7 @@ describe('scheduler', function () {
       { time: 1002, note: 62, opts: {time: 2, midi: 62} }
     ])
   })
-  it('null is used as note when event payload is null', function () {
+  it('null is used as note when event payload is null', () => {
     var player = StubPlayer(1000)
     player.schedule(0, [ [1, null], [2, null] ])
     assert.deepStrictEqual(player.played, [
@@ -51,15 +51,18 @@ describe('scheduler', function () {
       { time: 1002, note: null, opts: {} }
     ])
   })
-  it('null is used as note when no note, key, midi or name is present', function () {
-    var player = StubPlayer(1000)
-    player.schedule(0, [ { time: 1, gain: 1 }, { time: 2, gain: 0.5 } ])
-    assert.deepStrictEqual(player.played, [
-      { time: 1001, note: null, opts: {time: 1, gain: 1} },
-      { time: 1002, note: null, opts: {time: 2, gain: 0.5} }
-    ])
-  })
-  it('null events are ignored', function () {
+  it(
+    'null is used as note when no note, key, midi or name is present',
+    () => {
+      var player = StubPlayer(1000)
+      player.schedule(0, [ { time: 1, gain: 1 }, { time: 2, gain: 0.5 } ])
+      assert.deepStrictEqual(player.played, [
+        { time: 1001, note: null, opts: {time: 1, gain: 1} },
+        { time: 1002, note: null, opts: {time: 2, gain: 0.5} }
+      ])
+    }
+  )
+  it('null events are ignored', () => {
     var player = StubPlayer(1000)
     var events = 'x..x..'.split('').map(function (c, i) {
       if (c === 'x') return [0.5 * i, 'kick']

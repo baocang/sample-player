@@ -13,8 +13,8 @@ function eventHandler () {
   return handler
 }
 
-describe('events', function () {
-  it('emit events', function () {
+describe('events', () => {
+  it('emit events', () => {
     var audio = new Audio('one')
     var player = Player(audio.ac, audio.buffers).connect(audio.ac.destination)
     player.onevent = eventHandler()
@@ -25,7 +25,7 @@ describe('events', function () {
     player.stop()
     assert.deepStrictEqual(player.onevent.last, { event: 'stop', time: 0, object: 'one' })
   })
-  it('event handlers receives all events', function () {
+  it('event handlers receives all events', () => {
     var player = Player(new Audio().ac)
     player.onevent = eventHandler()
     player.onready = eventHandler()
@@ -36,7 +36,7 @@ describe('events', function () {
     assert.strictEqual(player.onstart.events.length, 1)
     assert.strictEqual(player.onevent.events.length, 2)
   })
-  it('add handlers', function () {
+  it('add handlers', () => {
     var player = Player(new Audio().ac)
     var one = eventHandler()
     var two = eventHandler()
@@ -46,14 +46,14 @@ describe('events', function () {
     assert.deepStrictEqual(one.last, { event: 'ready', time: 0, object: 'obj' })
     assert.deepStrictEqual(two.last, { event: 'ready', time: 0, object: 'obj' })
   })
-  it('uses "event" as default', function () {
+  it('uses "event" as default', () => {
     var player = Player(new Audio().ac)
     var handler = eventHandler()
     player.on(handler)
     player.emit('blah', 0, 'obj')
     assert.deepStrictEqual(handler.last, { event: 'blah', time: 0, object: 'obj' })
   })
-  it('on returns the player', function () {
+  it('on returns the player', () => {
     var player = Player(new Audio().ac)
     assert(player === player.on('event', eventHandler()))
   })
