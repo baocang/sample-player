@@ -1,5 +1,5 @@
 /* global AudioContext */
-var load = require('audio-loader')
+var load = require('@baocang/audio-loader')
 var player = require('..')
 var ac = new AudioContext()
 
@@ -35,7 +35,7 @@ for (var i = 0; i <= steps; i++) {
 }
 log('Midi notes: ' + notes.join(','))
 log('Loading samples...')
-load(ac, 'examples/audio/piano.js').then(function (buffers) {
+load('examples/audio/piano.js').then(function (buffers) {
   log('Samples loaded.')
   var piano = player(ac, buffers).connect(ac.destination)
   piano.on('event', function (a, b, c, d) { console.log(a, b, c, d) })

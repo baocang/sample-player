@@ -1,8 +1,7 @@
 /* global AudioContext */
-var load = require('audio-loader')
+var load = require('@baocang/audio-loader')
 var player = require('..')
 var ac = new AudioContext()
-
 
 function h (parent, tag, children, attrs) {
   var node = document.createElement(tag)
@@ -28,7 +27,7 @@ h(document.body, 'h1', 'Map note names example', {id: 'trigger'})
 h(document.body, 'h4', 'You can pass note names as strings or midi numbers')
 
 log('Loading samples...')
-load(ac, 'examples/audio/mrk2.json').then(function (buffers) {
+load('examples/audio/mrk2.json').then(function (buffers) {
   log('loaded')
   var drums = player(ac, buffers).connect(ac.destination)
   drums.on('event', function (a, b, c) { log(a, b, c) })

@@ -1,5 +1,5 @@
 /* global AudioContext */
-var load = require('audio-loader')
+var load = require('@baocang/audio-loader')
 var player = require('..')
 var ac = new AudioContext()
 
@@ -25,7 +25,7 @@ var log = function () {
 
 h(document.body, 'h1', 'Envelope example', {id: 'trigger'})
 
-load(ac, 'examples/audio/440Hz.mp3').then(function (buffer) {
+load('examples/audio/440Hz.mp3').then(function (buffer) {
   var p = player(ac, buffer, { attack: 10 }).connect(ac.destination)
   p.on(function (a, b, c, d) { console.log(a, b, c, d) })
 
