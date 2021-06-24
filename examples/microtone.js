@@ -3,17 +3,29 @@ var load = require('audio-loader')
 var player = require('..')
 var ac = new AudioContext()
 
-function h (tag, text) {
-  if (!tag.innerHTML) return '<' + tag + '>' + text + '</' + tag + '>'
-  tag.innerHTML = text.join('')
-  return function (text) { tag.innerHTML = tag.innerHTML + h('pre', text) }
+function h (parent, tag, children, attrs) {
+  var node = document.createElement(tag)
+  Object.keys(attrs || {}).forEach((attr) => {
+    node.setAttribute(attr, attrs[attr])
+  })
+  parent.appendChild(node)
+  if (typeof children === 'string') {
+    node.appendChild(document.createTextNode(children))
+  } else {
+    children && children.forEach((child) => {
+      node.appendChild(child)
+    })
+  }
+  return node
 }
 
-var log = h(document.body, [
-  h('h1', 'Microtone example'),
-  h('h4', 'You can pass midi numbers with decimal points'),
-  h('h4', 'You will hear an octave divided by 48 parts')
-])
+var log = function () {
+  h(document.body, 'pre', Array.prototype.slice.call(arguments).join(' '))
+}
+
+h(document.body, 'h1', 'Microtone example', {id: 'trigger'}),
+h(document.body, 'h4', 'You can pass midi numbers with decimal points'),
+h(document.body, 'h4', 'You will hear an octave divided by 48 parts')
 
 var steps = 48
 var step = 12 / steps
@@ -30,7 +42,9 @@ load(ac, 'examples/audio/piano.js').then(function (buffers) {
   piano.on('start', function (time, note) {
     log('note ' + note + ' started at ' + time)
   })
-  piano.schedule(0, notes.map(function (note, i) {
-    return [ i * 0.2, note ]
-  }))
+  document.querySelector('#trigger').addEventListener('click', function () {
+    piano.schedule(0, notes.map(function (note, i) {
+      return [ i * 0.2, note ]
+    }))
+  })
 })
