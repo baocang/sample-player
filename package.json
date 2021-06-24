@@ -1,5 +1,5 @@
 {
-  "name": "sample-player",
+  "name": "@baocang/sample-audio-player",
   "version": "0.5.5",
   "description": "A flexible web audio buffer player",
   "main": "lib/index.js",
